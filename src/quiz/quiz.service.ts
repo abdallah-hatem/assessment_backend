@@ -14,11 +14,11 @@ export class QuizService {
 
       return { quiz };
     } catch (error) {
-      if (error) {
-        const { message, statusCode } = error;
-        throw new HttpException(message, statusCode);
+      if (error.status) {
+        const { message, status } = error;
+        throw new HttpException(message, status);
       }
-      return error;
+      throw new HttpException(error, 500);
     }
   }
 
@@ -33,13 +33,11 @@ export class QuizService {
       if (!newQuiz) throw new HttpException('Error in database', 500);
       return { msg: 'successfully created', newQuiz };
     } catch (error) {
-      if (error) {
-        console.log(error);
-
+      if (error.status) {
         const { message, status } = error;
         throw new HttpException(message, status);
       }
-      return error;
+      throw new HttpException(error, 500);
     }
   }
 
@@ -53,13 +51,11 @@ export class QuizService {
 
       return { msg: 'Quiz deleted successfully' };
     } catch (error) {
-      if (error) {
-        console.log(error);
-
+      if (error.status) {
         const { message, status } = error;
         throw new HttpException(message, status);
       }
-      return error;
+      throw new HttpException(error, 500);
     }
   }
 
@@ -76,13 +72,11 @@ export class QuizService {
 
       return { msg: 'Quiz updated successfully', updatedQuiz };
     } catch (error) {
-      if (error) {
-        console.log(error);
-
+      if (error.status) {
         const { message, status } = error;
         throw new HttpException(message, status);
       }
-      return error;
+      throw new HttpException(error, 500);
     }
   }
 }

@@ -14,11 +14,11 @@ export class AnnouncemetService {
 
       return { announcements };
     } catch (error) {
-      if (error) {
-        const { message, statusCode } = error;
-        throw new HttpException(message, statusCode);
+      if (error.status) {
+        const { message, status } = error;
+        throw new HttpException(message, status);
       }
-      return error;
+      throw new HttpException(error, 500);
     }
   }
 
@@ -33,13 +33,11 @@ export class AnnouncemetService {
       if (!newAnn) throw new HttpException('Error in database', 500);
       return { msg: 'successfully created', newAnn };
     } catch (error) {
-      if (error) {
-        console.log(error);
-
+      if (error.status) {
         const { message, status } = error;
         throw new HttpException(message, status);
       }
-      return error;
+      throw new HttpException(error, 500);
     }
   }
 
@@ -53,13 +51,11 @@ export class AnnouncemetService {
 
       return { msg: 'Announcement deleted successfully' };
     } catch (error) {
-      if (error) {
-        console.log(error);
-
+      if (error.status) {
         const { message, status } = error;
         throw new HttpException(message, status);
       }
-      return error;
+      throw new HttpException(error, 500);
     }
   }
 
@@ -72,17 +68,16 @@ export class AnnouncemetService {
         data: { announcement },
       });
 
-      if (!updatedAnn) throw new HttpException('Error in database', 500);
+      if (!updatedAnn)
+        throw new HttpException('Error no announcement found', 404);
 
       return { msg: 'Announcement updated successfully', updatedAnn };
     } catch (error) {
-      if (error) {
-        console.log(error);
-
+      if (error.status) {
         const { message, status } = error;
         throw new HttpException(message, status);
       }
-      return error;
+      throw new HttpException(error, 500);
     }
   }
 }
